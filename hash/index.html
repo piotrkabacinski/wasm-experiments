@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hash example</title>
+
+    <style>
+      code {
+        display: block;
+      }
+
+      p {
+        font-family: Helvetica, Arial, sans-serif;
+        display: inline-block;
+        padding: 5px;
+        background: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <code></code>
+    <p></p>
+
+    <script src="hash.out.js"></script>
+    <script>
+      {
+        let t0;
+        let t1;
+
+        const c = document.querySelector("code");
+        const p = document.querySelector("p");
+
+        function hashed(pointer, length) {
+          t1 = performance.now();
+
+          let hashed = "";
+
+          for (let i = 0; i < length; i++) {
+            const char = Module.getValue(pointer + i, "i8");
+            hashed += String.fromCharCode(char);
+          }
+
+          c.innerHTML = hashed;
+          p.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
+        }
+
+        Module.onRuntimeInitialized = () => {
+          const message = prompt("Value to be hashed:");
+
+          if (!message) {
+            return;
+          }
+
+          const decoded = new Uint32Array(new TextEncoder().encode(message));
+
+          const buffer = Module._malloc(
+            decoded.length * decoded.BYTES_PER_ELEMENT
+          );
+
+          Module.HEAP32.set(decoded, buffer >> 2);
+
+          t0 = performance.now();
+
+          Module.ccall("sum", ["number", "number"], "void", [
+            buffer,
+            decoded.length
+          ]);
+
+          Module._free(buffer);
+        };
+      }
+    </script>
+  </body>
+</html>
