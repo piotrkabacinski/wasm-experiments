@@ -4,9 +4,9 @@ Welcome to [WebAssembly](https://webassembly.org/) experiments repo where I'm go
 
 ## Installation
 
-For now output WASM files are included in the repository. If you would like to play with source C/C++ files, you need to install [emscripten](https://emscripten.org/) complier first.
+Output WASM files are included in the repository. If you would like to play with source C/C++ files you need to install [Emscripten](https://emscripten.org/) complier first.
 
-For more details, go to [emscripten docs](https://emscripten.org/docs/getting_started/downloads.html).
+For more details, go to [Emscripten docs](https://emscripten.org/docs/getting_started/downloads.html).
 
 ```bash
 $ git clone https://github.com/emscripten-core/emsdk.git
