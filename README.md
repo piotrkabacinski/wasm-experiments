@@ -1,6 +1,6 @@
 # Hello, WASM!
 
-Welcome to [WebAssembly](https://webassembly.org/) experiments repo where I'm going to store my humble projects in this technology.
+Welcome to [WebAssembly](https://webassembly.org/) experiments repo with my humble test projects in this technology.
 
 ## Installation
 
