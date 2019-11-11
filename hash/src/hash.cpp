@@ -18,8 +18,7 @@ extern "C"
 
     for (int i = 0; i < length; i++)
     {
-      const char *letter = new char(buffer[i]);
-      message += letter;
+      message += char(buffer[i]);
     }
 
     string hashed = sha256(message);

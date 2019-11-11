@@ -7,21 +7,40 @@
     <title>Hash example</title>
 
     <style>
+      body {
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
       code {
         display: block;
       }
 
       p {
-        font-family: Helvetica, Arial, sans-serif;
         display: inline-block;
         padding: 5px;
         background: yellow;
       }
+
+      code,
+      p {
+        margin-top: 5px;
+      }
+
+      textarea {
+        width: 300px;
+        height: 100px;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 12px;
+      }
     </style>
   </head>
   <body>
-    <code></code>
-    <p></p>
+    <main>
+      <textarea placeholder="Message"></textarea>
+      <code>-</code>
+      <p>-</p>
+    </main>
 
     <script src="hash.out.js"></script>
     <script>
@@ -29,8 +48,9 @@
         let t0;
         let t1;
 
-        const c = document.querySelector("code");
-        const p = document.querySelector("p");
+        const textarea = document.querySelector("textarea");
+        const code = document.querySelector("code");
+        const paragraph = document.querySelector("p");
 
         function hashed(pointer, length) {
           t1 = performance.now();
@@ -42,33 +62,30 @@
             hashed += String.fromCharCode(char);
           }
 
-          c.innerHTML = hashed;
-          p.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
+          code.innerHTML = hashed;
+          paragraph.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
         }
 
         Module.onRuntimeInitialized = () => {
-          const message = prompt("Value to be hashed:");
+          textarea.addEventListener("keyup", event => {
+            const message = textarea.value.trim();
+            const decoded = new Uint32Array(new TextEncoder().encode(message));
 
-          if (!message) {
-            return;
-          }
+            const buffer = Module._malloc(
+              decoded.length * decoded.BYTES_PER_ELEMENT
+            );
 
-          const decoded = new Uint32Array(new TextEncoder().encode(message));
+            Module.HEAP32.set(decoded, buffer >> 2);
 
-          const buffer = Module._malloc(
-            decoded.length * decoded.BYTES_PER_ELEMENT
-          );
+            t0 = performance.now();
 
-          Module.HEAP32.set(decoded, buffer >> 2);
+            Module.ccall("sum", ["number", "number"], "void", [
+              buffer,
+              decoded.length
+            ]);
 
-          t0 = performance.now();
-
-          Module.ccall("sum", ["number", "number"], "void", [
-            buffer,
-            decoded.length
-          ]);
-
-          Module._free(buffer);
+            Module._free(buffer);
+          });
         };
       }
     </script>

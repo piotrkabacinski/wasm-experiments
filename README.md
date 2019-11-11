@@ -22,7 +22,7 @@ $ source ../emsdk/emsdk_env.sh --build=Release
 
 ## Build and compile
 
-For now here's one simple project `hash`, which main goal is to use existing C++ [sha256 library](http://www.zedwood.com/article/cpp-sha256-function). All it does it converts string to hashed value processed by WASM.
+For now here's one simple project `hash`, which main goal is to port existing C++ [sha256 library](http://www.zedwood.com/article/cpp-sha256-function). All it does it converts string to hashed value processed by WASM.
 
 ```bash
 $ make
