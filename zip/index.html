@@ -12,6 +12,7 @@
     <input type="file" multiple />
     <button type="button">Submit</button>
 
+    <script src="zip.out.js"></script>
     <script>
       {
         const fileInput = document.querySelector("input");
@@ -20,22 +21,27 @@
         button.addEventListener("click", () => {
           const file = fileInput.files[0];
 
+          // console.log(file);
+
           // https://stackoverflow.com/a/47422016
+          // https://stackoverflow.com/a/47317391
           const fr = new FileReader();
+
           fr.onload = function() {
             const fileData = new Uint8Array(fr.result);
 
-            console.log(fileData);
+            // https://groups.google.com/forum/m/#!topic/emscripten-discuss/_QJbbk3McIc
+            // Then with Module['FS_createDataFile']('/dir", "file.dat", data, true, true)
 
-            // Module["FS_createDataFile"](
-            //   "/",
-            //   "filename",
-            //   data,
-            //   true,
-            //   true,
-            //   true
-            // );
-            // Module.ccall("YourCppFunctionToUtilizeTheFile", null, [], null);
+            Module["FS_createDataFile"](
+              "/",
+              "fileName",
+              fileData,
+              true,
+              true,
+              true
+            );
+            Module.ccall("readFile", null, [], null);
 
             fileInput.value = null;
           };
