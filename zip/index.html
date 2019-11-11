@@ -8,5 +8,40 @@
   </head>
   <body>
     <h1>Zip example</h1>
+
+    <input type="file" multiple />
+    <button type="button">Submit</button>
+
+    <script>
+      {
+        const fileInput = document.querySelector("input");
+        const button = document.querySelector("button");
+
+        button.addEventListener("click", () => {
+          const file = fileInput.files[0];
+
+          // https://stackoverflow.com/a/47422016
+          const fr = new FileReader();
+          fr.onload = function() {
+            const fileData = new Uint8Array(fr.result);
+
+            console.log(fileData);
+
+            // Module["FS_createDataFile"](
+            //   "/",
+            //   "filename",
+            //   data,
+            //   true,
+            //   true,
+            //   true
+            // );
+            // Module.ccall("YourCppFunctionToUtilizeTheFile", null, [], null);
+
+            fileInput.value = null;
+          };
+          fr.readAsArrayBuffer(file);
+        });
+      }
+    </script>
   </body>
 </html>
