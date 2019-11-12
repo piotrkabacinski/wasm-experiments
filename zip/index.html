@@ -18,10 +18,30 @@
         const fileInput = document.querySelector("input");
         const button = document.querySelector("button");
 
+        const allocateFileName = fileName => {
+          fileName = fileName.trim();
+
+          const decoded = new Uint32Array(new TextEncoder().encode(fileName));
+
+          const buffer = Module._malloc(
+            decoded.length * decoded.BYTES_PER_ELEMENT
+          );
+
+          Module.HEAP32.set(decoded, buffer >> 2);
+
+          return {
+            buffer,
+            length: decoded.length,
+            free: () => {
+              Module._free(buffer);
+            }
+          };
+        };
+
         button.addEventListener("click", () => {
           const file = fileInput.files[0];
 
-          // console.log(file);
+          const { buffer, length, free } = allocateFileName(file.name);
 
           // https://stackoverflow.com/a/47422016
           // https://stackoverflow.com/a/47317391
@@ -30,21 +50,24 @@
           fr.onload = function() {
             const fileData = new Uint8Array(fr.result);
 
-            // https://groups.google.com/forum/m/#!topic/emscripten-discuss/_QJbbk3McIc
-            // Then with Module['FS_createDataFile']('/dir", "file.dat", data, true, true)
-
             Module["FS_createDataFile"](
               "/",
-              "fileName",
+              file.name,
               fileData,
               true,
               true,
               true
             );
-            Module.ccall("readFile", null, [], null);
 
+            Module.ccall("readFile", ["number", "number"], "void", [
+              buffer,
+              length
+            ]);
+
+            free();
             fileInput.value = null;
           };
+
           fr.readAsArrayBuffer(file);
         });
       }
