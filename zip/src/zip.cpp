@@ -49,6 +49,18 @@ extern "C"
 
             cout << zip_entry_size(zip) << endl;
             cout << "Pointer:" << &zip << endl;
+
+            ifstream zipFile;
+            zipFile.open("foo.zip");
+
+            if (ifs.is_open())
+            {
+                cout << "Zip file exists!" << endl;
+            }
+            else
+            {
+                cout << "Problems with zip file" << endl;
+            }
         }
 
         ifs.close();
