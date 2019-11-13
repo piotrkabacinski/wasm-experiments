@@ -1,6 +1,8 @@
 #!/bin/bash
 
-emcc ./src/zip.cpp \
+# -std=c++11 \
+
+emcc ./src/zip.cpp ./src/lib/zip.c \
 -s WASM=1 \
 -O3 \
 -s FORCE_FILESYSTEM=1 \
@@ -9,4 +11,3 @@ emcc ./src/zip.cpp \
 -s EXPORTED_FUNCTIONS='["_readFile"]' \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall']" \
 -o zip.out.js \
--std=c++14 \
