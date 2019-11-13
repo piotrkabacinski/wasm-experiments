@@ -9,51 +9,15 @@ using namespace std;
 
 int main()
 {
-    ifstream file;
+    struct zip_t *zip = zip_open("foo.zip", ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
 
-    string fileName = "test.txt";
-
-    ifstream ifs;
-    ifs.open("./" + fileName);
-
-    filebuf *fbuf = ifs.rdbuf();
-    size_t size = fbuf->pubseekoff(0, ifs.end, ifs.in);
-
-    if (!ifs.is_open())
+    zip_entry_open(zip, "foo.txt");
     {
-        cout << "Failed to open file" << endl;
+        const char *buf = "Some data here...\0";
+        zip_entry_write(zip, buf, strlen(buf));
     }
-    else
-    {
-        cout << "Opened" << endl;
-
-        struct zip_t *zip = zip_open("foo2.zip", 1, 'w');
-
-        zip_entry_open(zip, fileName.c_str());
-        {
-            // const char *buf = "Some data here...\0";
-            // zip_entry_write(zip, buf, strlen(buf));
-            zip_entry_write(zip, fbuf, size);
-        }
-        zip_entry_close(zip);
-
-        cout << zip_entry_size(zip) << endl;
-        cout << "Pointer:" << &zip << endl;
-
-        ifstream zipFile;
-        zipFile.open("foo.zip");
-
-        if (ifs.is_open())
-        {
-            cout << "Zip file exists!" << endl;
-        }
-        else
-        {
-            cout << "Problems with zip file" << endl;
-        }
-    }
-
-    ifs.close();
+    zip_entry_close(zip);
+    zip_close(zip);
 
     return 0;
 }

@@ -46,6 +46,7 @@ extern "C"
                 zip_entry_write(zip, fbuf, size);
             }
             zip_entry_close(zip);
+            zip_close(zip);
 
             cout << zip_entry_size(zip) << endl;
             cout << "Pointer:" << &zip << endl;
