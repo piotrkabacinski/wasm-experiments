@@ -18,6 +18,29 @@
         const fileInput = document.querySelector("input");
         const button = document.querySelector("button");
 
+        function getZip(pointer, length) {
+          console.log(pointer, length);
+
+          // const buffer = new ArrayBuffer(8);
+          const fileData = [];
+
+          for (let i = 0; i < length; i++) {
+            fileData.push(Module.getValue(pointer + i, "i16"));
+          }
+
+          console.log(fileData);
+
+          const fileUrl = URL.createObjectURL(
+            new Blob(fileData, { type: "text/plain" })
+          );
+
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.innerHTML = "Click!";
+          document.body.appendChild(link);
+          // link.click();
+        }
+
         const allocateFileName = fileName => {
           fileName = fileName.trim();
 
@@ -65,6 +88,7 @@
             ]);
 
             free();
+            // console.log(Module);
             fileInput.value = null;
           };
 

@@ -9,5 +9,5 @@ emcc ./src/zip.cpp ./src/lib/zip.c \
 -fno-rtti -fno-exceptions \
 -s DISABLE_EXCEPTION_CATCHING=1 \
 -s EXPORTED_FUNCTIONS='["_readFile"]' \
--s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall']" \
+-s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall', 'getValue']" \
 -o zip.out.js \
