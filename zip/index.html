@@ -25,7 +25,9 @@
           const fileData = [];
 
           for (let i = 0; i < length; i++) {
-            fileData.push(Module.getValue(pointer + i, "i16"));
+            fileData.push(
+              String.fromCharCode(Module.getValue(pointer + i, "i8"))
+            );
           }
 
           console.log(fileData);

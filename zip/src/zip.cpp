@@ -1,12 +1,13 @@
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 #include <emscripten.h>
 
 #include "lib/zip.h"
 
 using namespace std;
 
-EM_JS(void, call_getZip, (ifstream pFile, size_t length), {
+EM_JS(void, call_getZip, (struct zip_t * pFile, size_t length), {
     getZip(pFile, length);
 });
 
@@ -36,14 +37,18 @@ extern "C"
         filebuf *fbuf = file.rdbuf();
         size_t size = fbuf->pubseekoff(0, file.end, file.in);
 
-        if (!file.is_open())
+        FILE *f = fopen(fileName.c_str(), "r");
+
+        cout << f << endl;
+
+        if (f == NULL)
         {
             cout << "Failed to open file" << endl;
         }
         else
         {
             cout << "File opened!" << endl;
-            call_getZip(file, size);
+            // call_getZip(&f, size);
 
             struct zip_t *zip = zip_open("foo.zip", ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
 
@@ -52,10 +57,10 @@ extern "C"
                 zip_entry_write(zip, fbuf, size);
             }
             zip_entry_close(zip);
-            zip_close(zip);
 
-            // cout << zip_entry_size(zip) << endl;
-            // cout << "Pointer:" << &zip << endl;
+            call_getZip(zip, size);
+
+            zip_close(zip);
 
             ifstream zipFile;
             zipFile.open("foo.zip");
@@ -64,11 +69,8 @@ extern "C"
             {
                 cout << "Zip file exists!" << endl;
 
-                filebuf *zipFileBuf = zipFile.rdbuf();
-                size_t zipFileSize = zipFileBuf->pubseekoff(0, file.end, file.in);
-
-                // call_getZip(zipFileBuf, zipFileSize);
-                // call_getZip(zip, zipFileSize);
+                // filebuf *zipFileBuf = zipFile.rdbuf();
+                // size_t zipFileSize = zipFileBuf->pubseekoff(0, file.end, file.in);
             }
             else
             {
