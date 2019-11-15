@@ -46,9 +46,12 @@ extern "C"
 
             zip_entry_open(zip, fileName.c_str());
             {
-                // zip_entry_write(zip, fbuf, size);
-                const char *buf = "Some data here...\0";
-                zip_entry_write(zip, buf, strlen(buf));
+                // https://stackoverflow.com/a/18816870/6298753
+                ifstream file("/" + fileName);
+                string content((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+                const char *buf = content.c_str();
+
+                zip_entry_write(zip, buf, size);
             }
             zip_entry_close(zip);
             zip_close(zip);
