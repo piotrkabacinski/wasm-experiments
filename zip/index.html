@@ -82,7 +82,7 @@
                 );
 
                 filesData = filesData.concat([buffer, length]);
-                free();
+                // free();
 
                 if (filesData.length === files.length * 2) {
                   resolve(new Uint32Array(filesData));
