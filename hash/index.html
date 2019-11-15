@@ -36,6 +36,7 @@
     </style>
   </head>
   <body>
+    <h1>Sha256 example</h1>
     <main>
       <textarea placeholder="Message"></textarea>
       <code>-</code>
@@ -69,12 +70,18 @@
         Module.onRuntimeInitialized = () => {
           textarea.addEventListener("keyup", event => {
             const message = textarea.value.trim();
+
+            // Create int array with encoded message (characters will be transformed to ASCII values).
             const decoded = new Uint32Array(new TextEncoder().encode(message));
 
+            // Reserve memory for decoded message for WASM, and return memory address.
+            // WASM doesn't have access to JS memory, therefore we it's need
+            // to be allocated independently.
             const buffer = Module._malloc(
               decoded.length * decoded.BYTES_PER_ELEMENT
             );
 
+            // Allocate reserved memory with message data (as int32 array).
             Module.HEAP32.set(decoded, buffer >> 2);
 
             t0 = performance.now();

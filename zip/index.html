@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Zip</title>
+  </head>
+  <body>
+    <h1>Zip example</h1>
+
+    <input type="file" multiple />
+    <button type="button">Submit</button>
+
+    <script src="zip.out.js"></script>
+    <script>
+      {
+        const fileInput = document.querySelector("input");
+        const button = document.querySelector("button");
+
+        function getZip() {
+          const content = FS.readFile("file.zip", { encoding: "binary" });
+
+          const fileUrl = URL.createObjectURL(
+            new Blob(
+              [new Uint8Array(content, content.byteOffset, content.length)],
+              { type: " application/zip" }
+            )
+          );
+
+          fileUrl.name = "foo.zip";
+
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.innerHTML = "Click!";
+          document.body.appendChild(link);
+          // link.click();
+        }
+
+        function allocateFileName(fileName) {
+          fileName = fileName.trim();
+
+          const decoded = new Uint32Array(new TextEncoder().encode(fileName));
+
+          const buffer = Module._malloc(
+            decoded.length * decoded.BYTES_PER_ELEMENT
+          );
+
+          Module.HEAP32.set(decoded, buffer >> 2);
+
+          return {
+            buffer,
+            length: decoded.length,
+            free: () => {
+              Module._free(buffer);
+            }
+          };
+        }
+
+        function allocateFiles(files) {
+          // One dimensional array containing sequence of buffer pointer and length
+          let filesData = [];
+
+          // FileReader's onload method is async, therfore Promise's used to wait until all
+          // files are saved to memory before initiating wasm function
+          return new Promise(resolve => {
+            files.forEach(file => {
+              const { buffer, length, free } = allocateFileName(file.name);
+
+              const fr = new FileReader();
+
+              fr.onload = function() {
+                const fileData = new Uint8Array(fr.result);
+
+                Module["FS_createDataFile"](
+                  "/",
+                  file.name,
+                  fileData,
+                  true,
+                  true,
+                  true
+                );
+
+                filesData = filesData.concat([buffer, length]);
+                free();
+
+                if (filesData.length === files.length * 2) {
+                  resolve(new Uint32Array(filesData));
+                }
+              };
+
+              fr.readAsArrayBuffer(file);
+            });
+          });
+        }
+
+        button.addEventListener("click", async () => {
+          const files = Array.from(fileInput.files);
+          const filesData = await allocateFiles(files);
+
+          const buffer = Module._malloc(
+            filesData.length * filesData.BYTES_PER_ELEMENT
+          );
+
+          Module.HEAP32.set(filesData, buffer >> 2);
+
+          Module.ccall("read_file", ["number", "number"], "void", [
+            buffer,
+            files.length * 2
+          ]);
+        });
+      }
+    </script>
+  </body>
+</html>
