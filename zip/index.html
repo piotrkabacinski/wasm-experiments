@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Zip</title>
+    <title>Zip creator</title>
   </head>
   <body>
-    <h1>Zip example</h1>
+    <h1>Zip creator</h1>
 
     <input type="file" multiple />
     <button type="button">Submit</button>
@@ -17,6 +17,21 @@
       {
         const fileInput = document.querySelector("input");
         const button = document.querySelector("button");
+
+        // Subscribe callbacks for clean up event
+        const finalizer = {
+          callbacks: [],
+          append: function(callback) {
+            this.callbacks.push(callback);
+          },
+          finalize: function() {
+            this.callbacks.forEach(callback => {
+              if (typeof callback === "function") {
+                callback();
+              }
+            });
+          }
+        };
 
         function getZip() {
           const content = FS.readFile("file.zip", { encoding: "binary" });
@@ -28,13 +43,13 @@
             )
           );
 
-          fileUrl.name = "foo.zip";
-
           const link = document.createElement("a");
           link.href = fileUrl;
-          link.innerHTML = "Click!";
+          link.download = `package-${+new Date()}.zip`;
           document.body.appendChild(link);
-          // link.click();
+
+          link.click();
+          link.remove();
         }
 
         function allocateFileName(fileName) {
@@ -82,7 +97,7 @@
                 );
 
                 filesData = filesData.concat([buffer, length]);
-                // free();
+                finalizer.append(free);
 
                 if (filesData.length === files.length * 2) {
                   resolve(new Uint32Array(filesData));
@@ -108,6 +123,9 @@
             buffer,
             files.length * 2
           ]);
+
+          Module._free(buffer);
+          finalizer.finalize();
         });
       }
     </script>
