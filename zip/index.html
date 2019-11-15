@@ -111,6 +111,11 @@
 
         button.addEventListener("click", async () => {
           const files = Array.from(fileInput.files);
+
+          if (!files.length) {
+            return;
+          }
+
           const filesData = await allocateFiles(files);
 
           const buffer = Module._malloc(
@@ -124,6 +129,7 @@
             files.length * 2
           ]);
 
+          fileInput.value = "";
           Module._free(buffer);
           finalizer.finalize();
         });
