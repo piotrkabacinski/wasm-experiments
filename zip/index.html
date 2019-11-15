@@ -19,22 +19,16 @@
         const button = document.querySelector("button");
 
         function getZip(pointer, length) {
-          console.log(pointer, length);
-
-          // const buffer = new ArrayBuffer(8);
-          const fileData = [];
-
-          for (let i = 0; i < length; i++) {
-            fileData.push(
-              String.fromCharCode(Module.getValue(pointer + i, "i8"))
-            );
-          }
-
-          console.log(fileData);
+          const content = FS.readFile("foo.zip", { encoding: "binary" });
 
           const fileUrl = URL.createObjectURL(
-            new Blob(fileData, { type: "text/plain" })
+            new Blob(
+              [new Uint8Array(content, content.byteOffset, content.length)],
+              { type: " application/zip" } // text/plain
+            )
           );
+
+          fileUrl.name = "foo.zip";
 
           const link = document.createElement("a");
           link.href = fileUrl;
