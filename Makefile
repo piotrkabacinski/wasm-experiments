@@ -1,4 +1,4 @@
-all: sha256
+all: sha256 createZip
 
 sha256:
 	@echo "Compiling \"hash\" example..."
