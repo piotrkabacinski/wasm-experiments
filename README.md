@@ -45,4 +45,4 @@ POC: create ZIP package locally (using C [Zip library](https://github.com/kuba--
 
 MIT
 
-Used libraries have their's licence files included in `src` directories.
+Used libraries have their licence files included in `src` directories.
