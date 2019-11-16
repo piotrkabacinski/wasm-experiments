@@ -1,4 +1,4 @@
-# Hello, wasm! 👋
+# Hello, Wasm! 👋
 
 My humble test projects using [Web Assembly](https://webassembly.org/).
 
@@ -35,11 +35,11 @@ $ make createZip
 
 1. "sha256"
 
-Convert input value to [sha256 hash](https://en.wikipedia.org/wiki/SHA-2) using C++ [library](http://www.zedwood.com/article/cpp-sha256-function). [Demo](https://piotrkabacinski.github.io/WASM-experiments/hash/) &raquo;
+Convert input value to [sha256 hash](https://en.wikipedia.org/wiki/SHA-2) using C++ [library](http://www.zedwood.com/article/cpp-sha256-function). [Demo](https://piotrkabacinski.github.io/wasm-experiments/hash/) &raquo;
 
 2. "ZIP creator"
 
-POC: create ZIP package locally (using C [Zip library](https://github.com/kuba--/zip)) with provided files via browser's File API. [Demo](https://piotrkabacinski.github.io/WASM-experiments/zip/) &raquo;
+POC: create ZIP package locally (using C [Zip library](https://github.com/kuba--/zip)) with provided files via browser's File API. [Demo](https://piotrkabacinski.github.io/wasm-experiments/zip/) &raquo;
 
 ## Licence
 
