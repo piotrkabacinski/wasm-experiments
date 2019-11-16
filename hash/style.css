@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+footer {
+  margin-top: 20px;
+}
+
+code {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 5px;
+  font-size: 15px;
+}
+
+span {
+  display: inline-block;
+  font-size: 13px;
+}
+
+code,
+span {
+  margin-top: 5px;
+}
+
+textarea {
+  width: 100%;
+  max-width: 400px;
+  height: 50px;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 14px;
+  border: 1px solid grey;
+  padding: 5px;
+}

@@ -1,5 +1,6 @@
 .vscode
-**/foo.txt
+
 **/a.out
 **/foo.zip
-**/test.txt
+
+ngrok

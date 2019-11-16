@@ -4,44 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Hash example</title>
-
-    <style>
-      body {
-        font-family: Helvetica, Arial, sans-serif;
-      }
-
-      code {
-        display: block;
-      }
-
-      p {
-        display: inline-block;
-        padding: 5px;
-        background: yellow;
-      }
-
-      code,
-      p {
-        margin-top: 5px;
-      }
-
-      textarea {
-        width: 300px;
-        height: 100px;
-        margin-bottom: 10px;
-        display: block;
-        font-size: 12px;
-      }
-    </style>
+    <title>SHA-256 Generator</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Sha256 example</h1>
+    <header>
+      <h1>SHA-256 Generator</h1>
+    </header>
     <main>
-      <textarea placeholder="Message"></textarea>
+      <textarea placeholder="Input message..."></textarea>
+
+      Hash value:
       <code>-</code>
-      <p>-</p>
+      ⏱<span>-</span>
     </main>
+    <footer>
+      <a
+        href="https://github.com/piotrkabacinski/WASM-experiments/tree/master/hash"
+        >Source code</a
+      >
+    </footer>
 
     <script src="hash.out.js"></script>
     <script>
@@ -53,7 +35,7 @@
 
         const textarea = document.querySelector("textarea");
         var code = document.querySelector("code");
-        var paragraph = document.querySelector("p");
+        var span = document.querySelector("span");
 
         function hashed(pointer, length) {
           t1 = performance.now();
@@ -66,12 +48,17 @@
           }
 
           code.innerHTML = hashedValue;
-          paragraph.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
+          span.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
         }
 
         Module.onRuntimeInitialized = () => {
           textarea.addEventListener("keyup", event => {
             const message = textarea.value.trim();
+
+            if (!message) {
+              code.innerHTML = span.innerHTML = "-";
+              return;
+            }
 
             // Create int array with encoded message (characters will be transformed to ASCII values).
             const decoded = new Uint32Array(new TextEncoder().encode(message));

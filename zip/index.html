@@ -4,13 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Zip creator</title>
+    <title>Zip Creator</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
+      footer {
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Zip creator</h1>
+    <header>
+      <h1>Zip Creator</h1>
+    </header>
 
-    <input type="file" multiple />
-    <button type="button">Submit</button>
+    <main>
+      <input type="file" multiple />
+      <button type="button">Submit</button>
+    </main>
+
+    <footer>
+      <a
+        href="https://github.com/piotrkabacinski/WASM-experiments/tree/master/zip"
+        >Source code</a
+      >
+    </footer>
 
     <script src="zip.out.js"></script>
     <script>
