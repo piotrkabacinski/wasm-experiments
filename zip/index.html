@@ -52,7 +52,7 @@
           link.remove();
         }
 
-        function allocateFileName(fileName) {
+        const allocateFileName = fileName => {
           fileName = fileName.trim();
 
           const decoded = new Uint32Array(new TextEncoder().encode(fileName));
@@ -70,9 +70,9 @@
               Module._free(buffer);
             }
           };
-        }
+        };
 
-        function allocateFiles(files) {
+        const allocateFiles = files => {
           // One dimensional array containing sequence of buffer pointer and length
           let filesData = [];
 
@@ -107,7 +107,7 @@
               fr.readAsArrayBuffer(file);
             });
           });
-        }
+        };
 
         button.addEventListener("click", async () => {
           const files = Array.from(fileInput.files);

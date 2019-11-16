@@ -46,24 +46,26 @@
     <script src="hash.out.js"></script>
     <script>
       {
-        let t0;
-        let t1;
+        // Safari requires vars instead of let/const to make them accessible
+        // in inner functions (e.g. hashed)
+        var t0;
+        var t1;
 
         const textarea = document.querySelector("textarea");
-        const code = document.querySelector("code");
-        const paragraph = document.querySelector("p");
+        var code = document.querySelector("code");
+        var paragraph = document.querySelector("p");
 
         function hashed(pointer, length) {
           t1 = performance.now();
 
-          let hashed = "";
+          let hashedValue = "";
 
           for (let i = 0; i < length; i++) {
             const char = Module.getValue(pointer + i, "i8");
-            hashed += String.fromCharCode(char);
+            hashedValue += String.fromCharCode(char);
           }
 
-          code.innerHTML = hashed;
+          code.innerHTML = hashedValue;
           paragraph.innerHTML = `${parseFloat(t1 - t0).toFixed(2)} ms`;
         }
 
