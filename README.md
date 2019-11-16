@@ -1,10 +1,10 @@
-# Hello, WASM! 👋
+# Hello, wasm! 👋
 
 My humble test projects using [Web Assembly](https://webassembly.org/).
 
 ## 🐙 Setup
 
-Output WASM files are included in the repository. If you would like to play with source C/C++ files you need to install [Emscripten](https://emscripten.org/) complier first.
+Output wasm files are included in the repository. If you would like to play with source C/C++ files you need to install [Emscripten](https://emscripten.org/) complier first.
 
 For more details, go to [Emscripten docs](https://emscripten.org/docs/getting_started/downloads.html).
 
