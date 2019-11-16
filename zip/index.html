@@ -36,20 +36,25 @@
         function getZip() {
           const content = FS.readFile("file.zip", { encoding: "binary" });
 
-          const fileUrl = URL.createObjectURL(
-            new Blob(
-              [new Uint8Array(content, content.byteOffset, content.length)],
-              { type: " application/zip" }
-            )
+          const blob = new Blob(
+            [new Uint8Array(content, content.byteOffset, content.length)],
+            { type: " application/zip" }
           );
 
-          const link = document.createElement("a");
-          link.href = fileUrl;
-          link.download = `package-${+new Date()}.zip`;
-          document.body.appendChild(link);
+          const fr = new FileReader();
 
-          link.click();
-          link.remove();
+          fr.onload = function() {
+            window.location.href = fr.result;
+          };
+          fr.readAsDataURL(blob);
+
+          // const link = document.createElement("a");
+          // link.href = fileUrl;
+          // link.download = `package-${+new Date()}.zip`;
+          // document.body.appendChild(link);
+
+          // link.click();
+          // link.remove();
         }
 
         const allocateFileName = fileName => {
