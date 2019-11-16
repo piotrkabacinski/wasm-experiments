@@ -1,6 +1,6 @@
 # Hello, WASM! 👋
 
-Welcome to [Web Assembly](https://webassembly.org/) experiments repo with my humble test projects in this technology.
+My humble test projects using [Web Assembly](https://webassembly.org/).
 
 ## 🐙 Setup
 
