@@ -18,6 +18,14 @@
       footer {
         margin-top: 20px;
       }
+
+      label {
+        display: block;
+      }
+
+      fieldset {
+        border: 0;
+      }
     </style>
   </head>
   <body>
@@ -26,8 +34,25 @@
     </header>
 
     <main>
-      <input type="file" multiple />
-      <button type="button">Submit</button>
+      <form>
+        <fieldset>
+          <input type="file" multiple />
+        </fieldset>
+        <fieldset>
+          <label>Compression level (<span id="compressionValue"></span>)</label>
+          <input
+            type="range"
+            id="compression"
+            value="6"
+            min="0"
+            max="9"
+            onchange="setCompressionValue()"
+          />
+        </fieldset>
+        <fieldset>
+          <button type="submit">Submit</button>
+        </fieldset>
+      </form>
     </main>
 
     <footer>
@@ -42,6 +67,14 @@
       {
         const fileInput = document.querySelector("input");
         const button = document.querySelector("button");
+        const compression = document.querySelector("#compression");
+        const compressionValue = document.querySelector("#compressionValue");
+
+        function setCompressionValue() {
+          compressionValue.innerHTML = compression.value;
+        }
+
+        setCompressionValue();
 
         // Subscribe callbacks for clean up event
         const finalizer = {
@@ -138,7 +171,9 @@
           });
         };
 
-        button.addEventListener("click", async () => {
+        button.addEventListener("click", async event => {
+          event.preventDefault();
+
           const files = Array.from(fileInput.files);
 
           if (!files.length) {
@@ -153,9 +188,10 @@
 
           Module.HEAP32.set(filesData, buffer >> 2);
 
-          Module.ccall("read_file", ["number", "number"], "void", [
+          Module.ccall("read_file", ["number", "number", "number"], "void", [
             buffer,
-            files.length * 2
+            files.length * 2,
+            Number(compression.value)
           ]);
 
           fileInput.value = "";

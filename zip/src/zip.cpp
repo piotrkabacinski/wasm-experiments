@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <unistd.h>
 #include <emscripten.h>
 
 // https://github.com/kuba--/zip
@@ -27,11 +28,11 @@ extern "C"
 {
     ifstream file;
 
-    void read_file(int *filesData, int length)
+    void read_file(int *filesData, int length, int compression_level)
     {
         int i = 0;
 
-        struct zip_t *zip = zip_open("file.zip", ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
+        struct zip_t *zip = zip_open("file.zip", compression_level, 'w');
 
         while (i < length)
         {
@@ -43,6 +44,7 @@ extern "C"
             }
 
             zip_entry_close(zip);
+            unlink(file_name.c_str());
 
             i = i + 2;
         }
