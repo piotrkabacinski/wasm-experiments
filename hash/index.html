@@ -75,7 +75,7 @@
 
             t0 = performance.now();
 
-            Module.ccall("sum", ["number", "number"], "void", [
+            Module.ccall("hash", ["number", "number"], "void", [
               buffer,
               decoded.length
             ]);

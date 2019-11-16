@@ -188,7 +188,7 @@
 
           Module.HEAP32.set(filesData, buffer >> 2);
 
-          Module.ccall("read_file", ["number", "number", "number"], "void", [
+          Module.ccall("create_zip", ["number", "number", "number"], "void", [
             buffer,
             files.length * 2,
             Number(compression.value)

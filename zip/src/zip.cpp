@@ -28,7 +28,7 @@ extern "C"
 {
     ifstream file;
 
-    void read_file(int *filesData, int length, int compression_level)
+    void create_zip(int *filesData, int length, int compression_level)
     {
         int i = 0;
 

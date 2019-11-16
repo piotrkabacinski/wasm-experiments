@@ -17,7 +17,7 @@ emcc ./src/hash.cpp ./src/sha256/sha256.cpp \
 -O3 \
 -fno-rtti -fno-exceptions \
 -s DISABLE_EXCEPTION_CATCHING=1 \
--s EXPORTED_FUNCTIONS='["_malloc", "_sum", "_free"]' \
+-s EXPORTED_FUNCTIONS='["_malloc", "_hash", "_free"]' \
 -s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall', 'getValue']" \
 -o hash.out.js \
 -std=c++14 \

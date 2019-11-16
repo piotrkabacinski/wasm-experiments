@@ -12,7 +12,7 @@ EM_JS(void, call_hashed, (const char *pHashed, int length), {
 
 extern "C"
 {
-  void sum(int *buffer, int length)
+  void hash(int *buffer, int length)
   {
     string message;
 
