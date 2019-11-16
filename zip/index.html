@@ -12,6 +12,12 @@
     <input type="file" multiple />
     <button type="button">Submit</button>
 
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"
+      integrity="sha384-h+zwIp6VsQy9EE3fM+7apxmkC3M2odX+oPxGS8pdrT/WD4xByal2yiyZO5impixI"
+      crossorigin="anonymous"
+      defer
+    ></script>
     <script src="zip.out.js"></script>
     <script>
       {
@@ -41,20 +47,16 @@
             { type: " application/zip" }
           );
 
-          const fr = new FileReader();
+          try {
+            saveAs(blob, `package-${+new Date()}.zip`);
+          } catch (e) {
+            const fr = new FileReader();
 
-          fr.onload = function() {
-            window.location.href = fr.result;
-          };
-          fr.readAsDataURL(blob);
-
-          // const link = document.createElement("a");
-          // link.href = fileUrl;
-          // link.download = `package-${+new Date()}.zip`;
-          // document.body.appendChild(link);
-
-          // link.click();
-          // link.remove();
+            fr.onload = function() {
+              window.location.href = fr.result;
+            };
+            fr.readAsDataURL(blob);
+          }
         }
 
         const allocateFileName = fileName => {
