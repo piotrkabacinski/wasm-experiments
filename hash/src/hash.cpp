@@ -24,6 +24,6 @@ extern "C"
     string hashed = sha256(message);
     const char *chashed = hashed.c_str();
 
-    call_hashed(&chashed[0], hashed.length());
+    call_hashed(chashed, hashed.length());
   }
 }
