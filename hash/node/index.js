@@ -1,3 +1,4 @@
+// $ node index.js 100
 const express = require("express");
 const sha256 = require("sha256");
 const Module = require("../hash.out");
