@@ -65,14 +65,29 @@ Module.onRuntimeInitialized = () => {
     wasmTest(message);
   }
 
-  const results = {
-    timestamp: new Date(),
-    sha256: spliced(times.sha256, 10),
-    wasam: spliced(times.wasm, 10)
-  };
+  console.log(
+    "sha256:",
+    calculateAverage(times.sha256),
+    "\n",
+    "wasm:",
+    calculateAverage(times.wasm)
+  );
 
-  fs.appendFile(`results.json`, JSON.stringify(results), err => {
-    if (err) throw err;
-    console.log("Results saved 🎉");
-  });
+  fs.appendFile(
+    `results_sha256.json`,
+    JSON.stringify({ sha256: spliced(times.sha256, 1000) }),
+    err => {
+      if (err) throw err;
+      console.log("Detailed sha256 results saved 🎉");
+    }
+  );
+
+  fs.appendFile(
+    `results_wasm.json`,
+    JSON.stringify({ wasm: spliced(times.wasm, 1000) }),
+    err => {
+      if (err) throw err;
+      console.log("Detailed wasm results saved 🎉");
+    }
+  );
 };
