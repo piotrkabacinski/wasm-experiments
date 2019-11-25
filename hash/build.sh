@@ -15,6 +15,7 @@
 emcc ./src/hash.cpp ./src/sha256/sha256.cpp \
 -s WASM=1 \
 -O3 \
+-s ASSERTIONS=1 \
 -fno-rtti -fno-exceptions \
 -s DISABLE_EXCEPTION_CATCHING=1 \
 -s EXPORTED_FUNCTIONS='["_malloc", "_hash", "_free"]' \
