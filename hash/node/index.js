@@ -1,12 +1,10 @@
 // $ node index.js 100
-const express = require("express");
 const sha256 = require("sha256");
 const Module = require("../hash.out");
-const { randomString, getRandomInt } = require("./randomString");
+const fs = require("fs");
+const { randomString, getRandomInt, spliced } = require("./utils");
 
-const app = express();
-
-const divide = 1000000;
+const DIVIDE = 1000000;
 const [, , iterations = "1"] = process.argv;
 
 const times = {
@@ -25,11 +23,11 @@ const sha256test = message => {
   const start = process.hrtime();
   const hashedValue = sha256(message);
 
-  times.sha256.push(process.hrtime(start)[1] / divide);
+  times.sha256.push(process.hrtime(start)[1] / DIVIDE);
 };
 
 global.hashed = (pointer, length) => {
-  times.wasm.push(process.hrtime(wasmStart)[1] / divide);
+  times.wasm.push(process.hrtime(wasmStart)[1] / DIVIDE);
   //   let hashedValue = "";
   //   for (let i = 0; i < length; i++) {
   //     const char = Module.getValue(pointer + i, "i8");
@@ -67,10 +65,14 @@ Module.onRuntimeInitialized = () => {
     wasmTest(message);
   }
 
-  console.log(
-    "sha256:",
-    calculateAverage(times.sha256),
-    "WASM:",
-    calculateAverage(times.wasm)
-  );
+  const results = {
+    timestamp: new Date(),
+    sha256: spliced(times.sha256, 10),
+    wasam: spliced(times.wasm, 10)
+  };
+
+  fs.appendFile(`results.json`, JSON.stringify(results), err => {
+    if (err) throw err;
+    console.log("Results saved 🎉");
+  });
 };
