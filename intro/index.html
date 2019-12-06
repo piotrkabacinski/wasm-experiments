@@ -10,13 +10,15 @@
     <h1>Hello, Wasm!</h1>
 
     <script>
+      let factorial;
+
       {
         fetch("factorial.wasm")
           .then(binaryFile => binaryFile.arrayBuffer())
           .then(byteArray => WebAssembly.instantiate(byteArray))
           .then(wasm => {
-            const { factorial } = wasm.instance.exports;
-            console.log("Factorial:", factorial(3));
+            factorial = wasm.instance.exports.factorial;
+            console.log("Factorial:", factorial(3)); //
           });
       }
     </script>

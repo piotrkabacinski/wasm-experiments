@@ -1,9 +1,11 @@
-// gcc -o factorial factorial.c && ./factorial
-// #include <stdio.h>
+/*
+ Example C code to present WasmExplorer tool:
+ https://mbebenita.github.io/WasmExplorer/
+*/
 
 int factorial(int value)
 {
-    int f = 1;
+    long int f = 1;
 
     for (int i = 1; i <= value; i++)
     {
@@ -12,9 +14,3 @@ int factorial(int value)
 
     return f;
 }
-
-// int main()
-// {
-//     printf("%d", factorial(4));
-//     return 0;
-// }

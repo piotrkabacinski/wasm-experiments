@@ -36,15 +36,15 @@ extern "C"
 
         while (i < length)
         {
-            string file_name = get_file_name((int *)filesData[i], filesData[i + 1]);
+            const char *file_name = get_file_name((int *)filesData[i], filesData[i + 1]).c_str();
 
-            zip_entry_open(zip, file_name.c_str());
+            zip_entry_open(zip, file_name);
             {
-                zip_entry_fwrite(zip, file_name.c_str());
+                zip_entry_fwrite(zip, file_name);
             }
 
             zip_entry_close(zip);
-            unlink(file_name.c_str());
+            unlink(file_name);
 
             i = i + 2;
         }

@@ -1,7 +1,7 @@
 all: sha256 createZip
 
 sha256:
-	@echo "Compiling \"hash\" example..."
+	@echo "Compiling \"sha-256\" example..."
 	@cd hash && sh ./build.sh
 	@echo "Yay! 🎉"
 
